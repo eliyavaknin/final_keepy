@@ -162,6 +162,7 @@ public class UserPage extends AppCompatActivity implements IRequests {
             }
             dialog.dismiss();
         });
+
         FirebaseAuth.getInstance()
                 .addAuthStateListener(firebaseAuth -> {
                     if (firebaseAuth.getCurrentUser() == null) {

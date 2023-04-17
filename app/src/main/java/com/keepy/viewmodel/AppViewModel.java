@@ -1,9 +1,17 @@
 package com.keepy.viewmodel;
 
+import static android.service.controls.ControlsProviderService.TAG;
+
+import android.util.Log;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
@@ -13,6 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.keepy.Constants;
+import com.keepy.Setting;
 import com.keepy.models.ServiceRequest;
 import com.keepy.models.User;
 
@@ -40,10 +49,13 @@ public class AppViewModel extends ViewModel {
     public final LiveData<String> loadingLivaData = _loadingLivaData;
     private final MutableLiveData<List<ServiceRequest>> _incomingRequests = new MutableLiveData<>();
     public final LiveData<List<ServiceRequest>> incomingRequests = _incomingRequests;
+
     private final MutableLiveData<List<ServiceRequest>> _outgoingRequests = new MutableLiveData<>();
     public final LiveData<List<ServiceRequest>> outgoingRequests = _outgoingRequests;
+
     private final MutableLiveData<List<User>> _keeperRecommendations = new MutableLiveData<>();
     public final LiveData<List<User>> keeperRecommendations = _keeperRecommendations;
+
     private final MutableLiveData<List<User>> _keepersByType = new MutableLiveData<>();
     public final LiveData<List<User>> keepersByType = _keepersByType;
 
@@ -437,8 +449,7 @@ public class AppViewModel extends ViewModel {
         }
         // sort by rating
         q = q.orderBy("mKeeperData.rating", Query.Direction.DESCENDING);
-        q.get()
-                .addOnSuccessListener(value -> {
+        q.get().addOnSuccessListener(value -> {
                     List<User> keepers = new ArrayList<>();
                     for (DocumentSnapshot document : value.getDocuments()) { // O(n)
                         User keeper = document.toObject(User.class);
@@ -611,5 +622,35 @@ public class AppViewModel extends ViewModel {
                                 requestRef.delete();
                             });
                 });
+    }
+
+
+
+    // Deletes a user
+    public void deleteUser(AppCompatActivity activity) {
+        // [START delete_document]
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        db.collection(Constants.UsersCollection)
+                .whereEqualTo("mEmail",FirebaseAuth.getInstance().getCurrentUser().getEmail())
+                .limit(1)
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<QuerySnapshot>() {
+                    @Override
+                    public void onSuccess(QuerySnapshot queryDocumentSnapshots) {
+                        queryDocumentSnapshots.forEach(user -> user.getReference().delete());
+                        activity.finish();
+                        FirebaseAuth.getInstance().getCurrentUser().delete();
+                        FirebaseAuth.getInstance().signOut();
+                        Toast.makeText(activity.getApplicationContext(), "Your user has been delete successfully", Toast.LENGTH_LONG).show();
+                        Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error deleting document", e);
+                    }
+                });
+        // [END delete_document]
     }
 }
