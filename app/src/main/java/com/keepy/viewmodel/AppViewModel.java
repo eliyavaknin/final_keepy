@@ -132,26 +132,23 @@ public class AppViewModel extends ViewModel {
                     if (auth.getCurrentUser() != null)
                         FirebaseFirestore.getInstance()
                                 .collection(Constants.UsersCollection)
-                                // we get the user by email
-                                .whereEqualTo(Constants.UsersCollectionEmailField,
-                                        auth.getCurrentUser().getEmail())
-                                .limit(1)
+                                .document(FirebaseAuth.getInstance().getUid())
                                 .addSnapshotListener((value, error) -> {
-                                    if (error != null || value == null || value.isEmpty()) {
+                                    if (error != null || value == null) {
                                         _errMutableLiveData.postValue(error);
                                         return;
                                     }
 
-                                    User user = value.getDocuments().get(0).toObject(User.class);
+                                    User user = value.toObject(User.class);
                                     _userMutableLiveData.postValue(user);
 
                                     if (user != null) {
                                         if (user.getmIsClient()) {
-                                            getOutgoingRequests(value.getDocuments().get(0).getReference());
+                                            getOutgoingRequests(value.getReference());
                                         }
 
                                         if (user.getmIsKeeper()) {
-                                            getIncomingRequests(value.getDocuments().get(0).getReference());
+                                            getIncomingRequests(value.getReference());
                                         }
                                     }
                                 });

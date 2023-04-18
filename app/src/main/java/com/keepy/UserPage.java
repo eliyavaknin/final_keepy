@@ -134,7 +134,6 @@ public class UserPage extends AppCompatActivity implements IRequests {
 
 
         // observe changes on the user's data
-
         viewModel.userLiveData.observe(this, user -> {
             if (user != null) {
                 if (user.getmIsKeeper() && user.getmIsClient()) {
@@ -184,7 +183,8 @@ public class UserPage extends AppCompatActivity implements IRequests {
                 Constants.Utils.getKeeperNameAsAppropriateString(Constants.BabySitterDisabilitiesType),
                 Constants.Utils.getKeeperNameAsAppropriateString(Constants.HouseKeeperType)
         );
-        ArrayAdapter<String> adapter = new CustomArrayAdapter(this, android.R.layout.simple_spinner_item, keeperTypes);
+        ArrayAdapter<String> adapter = new CustomArrayAdapter(this,
+                android.R.layout.simple_spinner_item, keeperTypes);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         Spinner keeperTypeSpinner = findViewById(R.id.DomainEdit_ClientSearch);
         keeperTypeSpinner.setAdapter(adapter);

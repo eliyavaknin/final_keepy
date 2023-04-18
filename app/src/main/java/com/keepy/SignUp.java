@@ -1,5 +1,6 @@
 package com.keepy;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
@@ -17,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.keepy.models.User;
@@ -60,7 +62,8 @@ public class SignUp extends AppCompatActivity {
 
         });
         Spinner residence = findViewById(R.id.location_Signup);
-        ArrayAdapter<String> adapterItems = new ArrayAdapter<>(this, R.layout.list_item, Constants.places);
+        ArrayAdapter<String> adapterItems = new ArrayAdapter<>(this,
+                R.layout.list_item, Constants.places);
         residence.setAdapter(adapterItems);
         residence.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -133,15 +136,19 @@ public class SignUp extends AppCompatActivity {
                             );
                             newUser.setmLocation(mLocation);
                             newUser.setmFullName(nameText.getText().toString());
+                            newUser.setmUserID(FirebaseAuth.getInstance().getUid());
                             db.collection("Users")
-                                    .add(newUser)
+                                    .document(FirebaseAuth.getInstance().getUid())
+                                    .set(newUser)
                                     .addOnSuccessListener(documentReference -> {
-                                        newUser.setmUserID(documentReference.getId());
-                                        documentReference.update("mUserID", documentReference.getId());
-                                        Log.d("signup", "DocumentSnapshot added with ID: " + documentReference.getId());
                                         openMainpage(newUser);
                                     })
-                                    .addOnFailureListener(e -> Log.w("signup", "Error adding user", e));
+                                    .addOnFailureListener(e ->{});
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(SignUp.this,e.getMessage(),Toast.LENGTH_LONG).show();
                         }
                     });
         });
