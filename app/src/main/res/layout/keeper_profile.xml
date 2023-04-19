@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/keeper_profile_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="12dp"
+        android:text="Name"
+        android:textAlignment="center"
+        android:textSize="32sp" />
+    <TextView
+        android:id="@+id/keeper_profile_about"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="About"
+        android:visibility="gone"
+        android:textColor="#A6A6A6"
+        android:translationY="-15dp"
+        android:textAlignment="center"
+        android:textSize="18sp" />
+
+    <RatingBar
+        android:id="@+id/keeper_profile_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center"
+        android:clickable="false"
+        android:isIndicator="true"
+        android:scaleX="0.4"
+        android:scaleY="0.4"
+        android:textStyle="bold"
+        android:translationY="-20dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:translationY="-30dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="Services"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/keeper_profile_services"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:text="Services"
+            android:textAlignment="center"
+            android:textColor="#AFAFAF"
+
+            android:textSize="18sp" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="12dp"
+            android:text="Locations of operation"
+            android:textAlignment="center"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/keeper_profile_locations_of_operation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="4dp"
+            android:paddingBottom="12dp"
+            android:text="Haifa"
+            android:textAlignment="center"
+            android:textColor="#AFAFAF"
+            android:textSize="18sp" />
+
+
+        <Button
+            android:id="@+id/keeper_profile_send_request"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="16dp"
+            android:layout_marginTop="8dp"
+            android:padding="8dp"
+            android:text="Send request" />
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rate keeper"
+            android:textAlignment="center"
+            android:textColor="#838383"
+            android:textSize="14sp"
+            android:translationY="12dp" />
+
+
+
+        <TextView
+            android:id="@+id/already_rated"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="You have submitted rate for this keeper"
+            android:padding="8dp"
+            android:layout_marginTop="12dp"
+            android:visibility="gone"
+            android:textAlignment="center"
+            android:textColor="#AFAFAF"
+            android:textSize="14sp" />
+
+        <RatingBar
+            android:id="@+id/keeper_profile_submit_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:scaleX="0.5"
+            android:scaleY="0.5"
+            android:text="Send request" />
+    </LinearLayout>
+
+</LinearLayout>

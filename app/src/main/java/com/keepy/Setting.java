@@ -59,7 +59,7 @@ public class Setting extends AppCompatActivity {
         builder.show();
     }
     public void opensignuppage() {
-        Intent Intent = new Intent(Setting.this, ResetPassword.class);
+        Intent Intent = new Intent(Setting.this,ForgotPassword.class);
         startActivity(Intent);
     }
     public void openMainPage() {
